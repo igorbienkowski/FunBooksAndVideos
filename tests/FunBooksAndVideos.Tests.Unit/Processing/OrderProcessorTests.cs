@@ -120,4 +120,41 @@ public class OrderProcessorTests
         _shippingService.DidNotReceiveWithAnyArgs().GenerateShippingSlip(default!);
         _membershipService.DidNotReceiveWithAnyArgs().Activate(default, default);
     }
+    
+    [Fact]
+    public void Process_Should_HandleLargeOrder_WithMultipleItemsOfSameType()
+    {
+        // Arrange
+        var order = new PurchaseOrder(1, 1, [
+            new Video("Video 1", 10m),
+            new Video("Video 2", 10m),
+            new Membership("M1", 5m, MembershipType.BookClub),
+            new Membership("M2", 5m, MembershipType.VideoClub)
+        ]);
+
+        // Act
+        _sut.Process(order);
+
+        // Assert
+        _shippingService.Received(2).GenerateShippingSlip(order);
+        _membershipService.Received(2).Activate(Arg.Any<long>(), Arg.Any<MembershipType>());
+    }
+
+    [Fact]
+    public void Process_Should_NotThrow_When_OrderHasNoActionableItems()
+    {
+        // Arrange
+        var order = new PurchaseOrder(1, 1, [
+            new Book("E-Book 1", 10m, IsPhysical: false),
+            new Book("E-Book 2", 10m, IsPhysical: false)
+        ]);
+
+        // Act
+        Action act = () => _sut.Process(order);
+
+        // Assert
+        act.Should().NotThrow();
+        _shippingService.DidNotReceiveWithAnyArgs().GenerateShippingSlip(default!);
+        _membershipService.DidNotReceiveWithAnyArgs().Activate(default, default);
+    }
 }
