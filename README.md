@@ -2,6 +2,8 @@
 
 A technical prototype of an e-commerce order processing system for a shop offering books, videos, and club memberships. This project demonstrates clean code principles, design patterns, and the latest features of .NET 10.
 
+![Build Status](https://github.com/igorbienkowski/FunBooksAndVideos/actions/workflows/dotnet.yml/badge.svg)
+
 ## 🚀 Tech Stack
 
 - **Runtime:** .NET 10
