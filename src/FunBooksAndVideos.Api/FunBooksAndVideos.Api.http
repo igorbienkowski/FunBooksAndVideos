@@ -1,6 +1,6 @@
-@FunBooksAndVideos.Api_HostAddress = http://localhost:5036
+@Api_HostAddress = http://localhost:5036
 
-GET {{FunBooksAndVideos.Api_HostAddress}}/weatherforecast/
+GET {{Api_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
